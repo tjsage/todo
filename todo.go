@@ -4,8 +4,9 @@ package main
 import (
 	"github.com/go-martini/martini"
 	"github.com/codegangsta/martini-contrib/render"
-	//"github.com/codegangsta/martini-contrib/binding"
+	"github.com/codegangsta/martini-contrib/binding"
 	"data"
+	"log"
 )
 
 func main() {
@@ -19,6 +20,12 @@ func main() {
 	m.Get("/", func(r render.Render) {
 		tasks := data.GetTasks()
 		r.HTML(200, "index", tasks)
+	})
+
+	m.Post("/Task/New", binding.Bind(data.Task{}), func(task data.Task, r render.Render) {
+		log.Println("Task: ", task)
+		task.Save()
+		r.Redirect("/")
 	})
 
 	m.Run()

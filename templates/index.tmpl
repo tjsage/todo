@@ -5,6 +5,38 @@
 		</div>
 	</div>
 	<div class="panel-body">
-		Put things here
+		<form action="/Task/New" method="Post">
+			<div class="row form-group">
+				<div class="col-lg-2">
+					Task
+				</div>
+
+				<div class="col-lg-8">
+					<input type="text" name="Name" class="form-control"/>
+				</div>
+				<div class="col-lg-2">
+					<input type="submit" class="btn btn-primary" value="Add" />
+				</div>
+			</div>
+		</div>
+
+		<table id="tasks" class="table">
+			<thead>
+				<tr>
+					<th>Task Name</th>
+				</tr>
+			</thead>
+			<tbody>
+				{{ range . }}
+					<tr>
+						<td>{{ .Name }}
+					</tr>
+				{{ end }}
+			</tbody>
+		</table>
 	</div>
+
+	<script type="text/javascript">
+		//$("#tasks").DataTable();
+	</script>
 </div>

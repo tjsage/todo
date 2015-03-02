@@ -1,5 +1,5 @@
 {
 	"Development": {
-		"DbConnectionString" : "user:password@tcp(127.0.0.1:3306)/tasks"
+		"DbConnectionString" : "taskmaster:password@tcp(127.0.0.1:3306)/Tasks"
 	}
 }
