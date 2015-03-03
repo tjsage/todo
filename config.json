@@ -1,5 +1,6 @@
 {
 	"Development": {
-		"DbConnectionString" : "taskmaster:password@tcp(127.0.0.1:3306)/Tasks"
+		"DbConnectionString" : "taskmaster:password@tcp(127.0.0.1:3306)/Tasks",
+		"APIServer" : "https://api.kyani.net"
 	}
 }

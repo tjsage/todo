@@ -1,9 +1,9 @@
 package config
 
 import (
-    "encoding/json"
-    "fmt"
-    "io/ioutil"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
 )
 
 type Config struct {
@@ -12,6 +12,7 @@ type Config struct {
 
 type ConfigSection struct {
 	DbConnectionString string
+	APIServer          string
 }
 
 var globalConfig Config

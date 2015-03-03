@@ -23,13 +23,15 @@
 		<table id="tasks" class="table">
 			<thead>
 				<tr>
-					<th>Task Name</th>
+					<th>Name</th>
+					<th>Country</th>
 				</tr>
 			</thead>
 			<tbody>
-				{{ range . }}
+				{{ range .Tasks }}
 					<tr>
-						<td>{{ .Name }}
+						<td>{{ .Name }}</td>
+						<td>{{ .SomeLand }}</td>
 					</tr>
 				{{ end }}
 			</tbody>
