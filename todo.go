@@ -1,13 +1,11 @@
 package main
 
 import (
-	"data"
 	"github.com/codegangsta/martini-contrib/binding"
 	"github.com/codegangsta/martini-contrib/render"
 	"github.com/go-martini/martini"
-	"kyClient"
-	"log"
-	"models"
+	"github.com/tjsage/todo/controllers"
+	"github.com/tjsage/todo/models"
 )
 
 func main() {
@@ -18,31 +16,8 @@ func main() {
 		Layout:    "layout",
 	}))
 
-	m.Get("/", func(r render.Render) {
-		tasks := data.GetTasks()
-		countries := kyClient.GetCountries()
-		taskList := models.CreateTaskList(countries, tasks)
-
-		r.HTML(200, "index", taskList)
-	})
-
-	m.Get("/countries", func(r render.Render) {
-		log.Println("LIST Countries")
-		myCountries := kyClient.GetCountries()
-		r.JSON(200, myCountries)
-	})
-
-	m.Post("/tasks", binding.Bind(models.TaskSearch{}), func(taskSearch models.TaskSearch, r render.Render) {
-		log.Println("Searching for: ", taskSearch.SearchTerm)
-		tasks := data.SearchTasks(taskSearch.SearchTerm)
-		r.JSON(200, tasks)
-	})
-
-	m.Post("/Task/New", binding.Bind(data.Task{}), func(task data.Task, r render.Render) {
-		log.Println("Task: ", task)
-		task.Save()
-		r.Redirect("/")
-	})
-
+	m.Get("/", controllers.TaskIndex)
+	//m.Post("/tasks", binding.Bind(controllers.TaskSearchData{}), controllers.TaskSearch)
+	m.Post("/tasks/new", binding.Bind(models.Task{}), controllers.NewTask)
 	m.Run()
 }
