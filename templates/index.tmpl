@@ -1,44 +1,76 @@
 <div class="panel panel-default">
 	<div class="panel-heading">
+		<div class="panel-title">Tasks</div>
+	</div>
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-lg-12">
+				{{ if .Tasks }}
+					<table id="tasks" class="table">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Country</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							{{ range .Tasks }}
+								<tr>
+									<td>{{ .Name }}</td>
+									<td>{{ .Country }}</td>
+									<td><a href="tasks/delete/{{ .ID }}"><i class="fa fa-trash"></i>
+								</tr>
+							{{ end }}
+						</tbody>
+					</table>
+				{{ else}}
+					<div class="alert alert-warning" role="alert">No tasks have been created!</div>
+				{{ end }}
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-heading">
 		<div class="panel-title">
-			To Do List
+			New Task
 		</div>
 	</div>
 	<div class="panel-body">
-		<form action="/Task/New" method="Post">
+		<form action="/tasks/new" method="Post">
 			<div class="row form-group">
 				<div class="col-lg-2">
-					Task
+					<label for="Name">Name</label>
 				</div>
 
-				<div class="col-lg-8">
-					<input type="text" name="Name" class="form-control"/>
+				<div class="col-lg-10">
+					<input type="text" name="Name" class="form-control" data-validate="required,max(30)" />
 				</div>
+			</div>
+			<div class="row form-group">
 				<div class="col-lg-2">
+					<label for="Country">Country</label>
+				</div>
+
+				<div class="col-lg-10">
+					<select name="Country" class="form-control" data-placeholder="Choose a Country">
+						{{ range .Countries }}
+							<option value="{{ .DisplayName }}">{{ .DisplayName }}</option>
+						{{ end }}
+					</select>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12">
 					<input type="submit" class="btn btn-primary" value="Add" />
 				</div>
 			</div>
-		</div>
-
-		<table id="tasks" class="table">
-			<thead>
-				<tr>
-					<th>Name</th>
-					<th>Country</th>
-				</tr>
-			</thead>
-			<tbody>
-				{{ range .Tasks }}
-					<tr>
-						<td>{{ .Name }}</td>
-						<td>{{ .SomeLand }}</td>
-					</tr>
-				{{ end }}
-			</tbody>
-		</table>
+		</form>
 	</div>
-
-	<script type="text/javascript">
-		//$("#tasks").DataTable();
-	</script>
 </div>
+
+<script type="text/javascript">
+	$("select").chosen();
+</script>

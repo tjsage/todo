@@ -1,9 +1,8 @@
 package models
 
 import (
-	"database/sql"
-	"github.com/coopernurse/gorp"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/jinzhu/gorm"
 	"github.com/tjsage/todo/services"
 	//"fmt"
 	//"log"
@@ -11,22 +10,18 @@ import (
 	"log"
 )
 
-var dbMap *gorp.DbMap
+var db *gorm.DB
 
 func init() {
-	config := services.GetConfig()
-	log.Println("Connection String: ", config.DbConnectionString)
-	db, err := sql.Open("mysql", config.DbConnectionString)
+	dbPointer, err := gorm.Open("mysql", services.GetConfig().DbConnectionString)
 
 	if err != nil {
 		log.Println(err)
+		return
 	}
-	dbMap = &gorp.DbMap{Db: db, Dialect: gorp.MySQLDialect{"InnoDB", "UTF8"}}
 
-	dbMap.AddTableWithName(Task{}, "Tasks").SetKeys(true, "TaskId")
-	log.Println(dbMap)
-}
+	db = &dbPointer
 
-func GetDbMap() *gorp.DbMap {
-	return dbMap
+	db.AutoMigrate(&Task{})
+
 }

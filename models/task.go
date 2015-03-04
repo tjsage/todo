@@ -5,23 +5,14 @@ import (
 )
 
 type Task struct {
-	TaskId      int
-	NewId       int
-	SomeLand    string
-	Name        string `form:"Name" binding:"Required" maxlength:"100"`
-	CountryCode int    `form:"countryCode" binding:"Required"`
+	ID      int
+	Country string `sql:"type:varchar(100);" form:"Country"`
+	Name    string `form:"Name" binding:"Required" maxlength:"100" sql:"type:varchar(100)"`
 }
 
 func GetTasks() []Task {
 	var tasks []Task
-	dbMap := GetDbMap()
-
-	_, err := dbMap.Select(&tasks, "Select * from Tasks")
-	if err != nil {
-		log.Println("Error - ", err)
-	}
-
-	log.Println("Tasks ", tasks)
+	db.Find(&tasks)
 	return tasks
 }
 
@@ -30,25 +21,22 @@ func SearchTasks(term string) []Task {
 	//var adustedSearch string = "%" + term + "%"
 	//_, err := dbMap.Select(&tasks, "SELECT * FROM Tasks where Name like ?", adustedSearch)
 
-	dbMap := GetDbMap()
-	_, err := dbMap.Select(&tasks, "SELECT * FROM Tasks Where SOUNDEX(`Name`) = SOUNDEX(?)", term)
-	if err != nil {
-		log.Println(err)
-	}
-
+	db.Where("SOUNDEX(`Name`) = Soundex(?)", term).Find("&tasks")
 	return tasks
 }
 
 func GetTask(id int) *Task {
-	dbMap := GetDbMap()
 	task := &Task{}
-	dbMap.Get(task, id)
+	db.Find(task, id)
 
 	return task
 }
 
+func DeleteTask(id int) {
+	db.Delete(&Task{ID: id})
+}
+
 func (task *Task) Save() bool {
-	dbMap := GetDbMap()
 	log.Println("Saving task")
 
 	if !task.validate() {
@@ -56,10 +44,10 @@ func (task *Task) Save() bool {
 		return false
 	}
 
-	if task.TaskId == 0 {
-		dbMap.Insert(task)
+	if task.ID == 0 {
+		db.Create(task)
 	} else {
-		dbMap.Update(task)
+		db.Save(task)
 	}
 
 	return true

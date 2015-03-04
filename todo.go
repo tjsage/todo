@@ -17,6 +17,7 @@ func main() {
 	}))
 
 	m.Get("/", controllers.TaskIndex)
+	m.Get("/tasks/delete/:id", controllers.DeleteTask)
 	//m.Post("/tasks", binding.Bind(controllers.TaskSearchData{}), controllers.TaskSearch)
 	m.Post("/tasks/new", binding.Bind(models.Task{}), controllers.NewTask)
 	m.Run()

@@ -2,8 +2,10 @@ package controllers
 
 import (
 	"log"
+	"strconv"
 
 	"github.com/codegangsta/martini-contrib/render"
+	"github.com/go-martini/martini"
 	"github.com/tjsage/todo/models"
 )
 
@@ -29,17 +31,24 @@ func TaskIndex(r render.Render) {
 	r.HTML(200, "index", taskList)
 }
 
-/*func TaskSearch(taskSearch models.Task, r render.Render) {
-	log.Println("Searching for: ", taskSearch.SearchTerm)
-	tasks := data.SearchTasks(taskSearch.SearchTerm)
-	r.JSON(200, tasks)
-}*/
+func DeleteTask(args martini.Params, r render.Render) {
+	i, err := strconv.Atoi(args["id"])
+	if err != nil {
+		log.Println("Error during DeleteTask", err)
+		return
+	}
+
+	models.DeleteTask(i)
+	r.Redirect("/")
+}
 
 func NewTask(task models.Task, r render.Render) {
 	log.Println("Task: ", task)
 	task.Save()
 	r.Redirect("/")
 }
+
+/*Private helper functions */
 
 func createTaskList(countries []models.Country, tasks []models.Task) *TaskList {
 	var countryMap = make(map[int]models.Country)
