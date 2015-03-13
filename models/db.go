@@ -23,5 +23,5 @@ func init() {
 	db = &dbPointer
 
 	db.AutoMigrate(&Task{})
-
+	db.AutoMigrate(&Login{})
 }

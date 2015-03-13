@@ -1,8 +1,6 @@
-hello.exe
 *.txt
 bin/*
 pkg/*
-src/golang.org/*
-src/github.com/*
-hello
-src/code.google.com/*
+todo
+gin-bin
+.DS_STORE
